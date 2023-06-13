@@ -3,7 +3,8 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "D:/sudo_game/include/**"
       ],
       "defines": [
         "_DEBUG",

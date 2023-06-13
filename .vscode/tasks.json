@@ -8,9 +8,10 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 //编译工作区下的所有cpp文件
-                "${workspaceFolder}\\*.cpp",
+                "-I","D:\\sudo_game\\include",
+                "${workspaceFolder}\\src\\*.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${workspaceFolder}\\output\\${fileBasenameNoExtension}.exe",
                 //防止打印输出中文乱码
                 "-fexec-charset=GBK"
             ],

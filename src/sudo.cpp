@@ -1,18 +1,20 @@
 #include<iostream>
 #include<cstring>
 #include<vector>
+#include<time.h>
+#include <stdlib.h>
 #include "command.h"
 #include "sudo_generator.h"
 #include "sudo_solver.h"
-
 
 using namespace std;
 
 Command parseCommand(int argc, char* argv[]);
 void handleCommand(Command& command);
-// void writeToFile(vector<Board> boards);
+
 
 int main(int argc, char* argv[]){
+   srand((unsigned)time(NULL));
    Command command = parseCommand(argc, argv);
    handleCommand(command);
 }
@@ -20,11 +22,12 @@ int main(int argc, char* argv[]){
 void handleCommand(Command& command){
     if(command.is_create){
         SudoGenerator sudoGenerator = SudoGenerator();
-        sudoGenerator.generate_endGame(command);
+        sudoGenerator.generate_end_map(command);
     }
     else if(command.is_solve){
+        cout<<123<<endl;
         SudoSolver sudoSolver = SudoSolver();
-        sudoSolver.solve_sudo_game(command);
+        sudoSolver.solve_sudo_games(command);
     }
     else if(command.game_number!=0){
         SudoGenerator sudoGenerator = SudoGenerator();
@@ -99,10 +102,10 @@ Command parseCommand(int argc, char* argv[]){
             try{
             int num = atoi(argv[++i]);
             if(num >= 20 && num <=55)
-            command.hole_number = num;
+                command.hole_number = num;
             else{
-            cerr<<"arg r need a number between 20 and 55"<<endl;
-            exit(0);
+                cerr<<"arg r need a number between 20 and 55"<<endl;
+                exit(0);
             }
             }catch(exception e){
                 cerr<<"arg r need a number"<<endl;
@@ -110,6 +113,10 @@ Command parseCommand(int argc, char* argv[]){
             }
         }
            
+    }
+    if(command.game_hard_level!=0 && command.hole_number != 0){
+        cerr<<"arg m and arg r can not apear together!"<<endl;
+        exit(0);
     }
     
     }

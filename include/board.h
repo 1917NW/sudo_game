@@ -1,29 +1,17 @@
+
+#ifndef _BOOARD_
+#define _BOOARD_
+
 #include<vector>
 #include<time.h>
 #include <stdlib.h>
+#include<fstream>
+#include<iostream>
 using namespace std;
 typedef vector<vector<char>> Board;
+vector<int> getRandOrder();
+void writeToFile(vector<Board> boards, string sign_statement);
+vector<Board> read_from_file(string file_path);
 
-vector<int> getRandOrder()
-{   
-    srand(time(NULL));
-    vector<int> order;
-    bool sign[9];
-    for(int i = 0; i < 9; i++){
-        sign[i] = false;
-    }
-    while (order.size() != 9)
-    {
-        int num = rand() % 9;
-        if (sign[num])
-        {
-            continue;
-        }
-        else
-        {
-            order.push_back(num);
-            sign[num] =true;
-        }
-    }
-    return order;
-}
+#endif
+

@@ -2,6 +2,10 @@
 #include<cstring>
 #include<vector>
 #include "command.h"
+#include "sudo_generator.h"
+#include "sudo_solver.h"
+
+
 using namespace std;
 
 Command parseCommand(int argc, char* argv[]);
@@ -14,7 +18,18 @@ int main(int argc, char* argv[]){
 }
 
 void handleCommand(Command& command){
-
+    if(command.is_create){
+        SudoGenerator sudoGenerator = SudoGenerator();
+        sudoGenerator.generate_endGame(command);
+    }
+    else if(command.is_solve){
+        SudoSolver sudoSolver = SudoSolver();
+        sudoSolver.solve_sudo_game(command);
+    }
+    else if(command.game_number!=0){
+        SudoGenerator sudoGenerator = SudoGenerator();
+        sudoGenerator.generate_sudo_game(command);
+    }
 }
 
 

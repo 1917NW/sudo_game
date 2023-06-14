@@ -1,3 +1,6 @@
+#ifndef COMMAND
+#define COMMAND
+
 #include<string>
 using namespace std;
 class Command{
@@ -25,3 +28,5 @@ public:
     void show();
 
 };
+
+#endif

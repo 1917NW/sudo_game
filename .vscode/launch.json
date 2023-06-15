@@ -5,7 +5,7 @@
             "name": "C/C++ Runner: Debug Session",
             "type": "cppdbg",
             "request": "launch",
-            "args": [],
+            "args": ["-s","..\\sudogame.txt"],
             "stopAtEntry": false,
             "externalConsole": true,
             "cwd": "d:/sudo_game",

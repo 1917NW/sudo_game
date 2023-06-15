@@ -14,39 +14,39 @@ SudoGenerator::~SudoGenerator()
 }
 
 
-void copySquare(Board &board, int src_x, int src_y, bool isRow)
+void row_or_col_change(Board &board, int src_x, int src_y, bool is_row_change)
 {
         int rand_tmp = rand() % 2 + 1;
-        int order_first[3] = {1, 2, 0};
-        int order_second[3] = {2, 0, 1};
+        int first_order[3] = {1, 2, 0};
+        int second_order[3] = {2, 0, 1};
         if (rand_tmp == 2)
         {
-            order_first[0] = 2;
-            order_first[1] = 0;
-            order_first[2] = 1;
-            order_second[0] = 1;
-            order_second[1] = 2;
-            order_second[2] = 0;
+            first_order[0] = 2;
+            first_order[1] = 0;
+            first_order[2] = 1;
+            second_order[0] = 1;
+            second_order[1] = 2;
+            second_order[2] = 0;
         }
         for (int i = 0; i < 3; i++)
         {
-            if (isRow)
+            if (is_row_change)
             {
-                board[src_x][i] = board[src_x + order_first[0]][src_y + i];
-                board[src_x + 1][i] = board[src_x + order_first[1]][src_y + i];
-                board[src_x + 2][i] = board[src_x + order_first[2]][src_y + i];
-                board[src_x][i + 6] = board[src_x + order_second[0]][src_y + i];
-                board[src_x + 1][i + 6] = board[src_x + order_second[1]][src_y + i];
-                board[src_x + 2][i + 6] = board[src_x + order_second[2]][src_y + i];
+                board[src_x][i] = board[src_x + first_order[0]][src_y + i];
+                board[src_x + 1][i] = board[src_x + first_order[1]][src_y + i];
+                board[src_x + 2][i] = board[src_x + first_order[2]][src_y + i];
+                board[src_x][i + 6] = board[src_x + second_order[0]][src_y + i];
+                board[src_x + 1][i + 6] = board[src_x + second_order[1]][src_y + i];
+                board[src_x + 2][i + 6] = board[src_x + second_order[2]][src_y + i];
             }
             else
             {
-                board[i][src_y] = board[src_x + i][src_y + order_first[0]];
-                board[i][src_y + 1] = board[src_x + i][src_y + order_first[1]];
-                board[i][src_y + 2] = board[src_x + i][src_y + order_first[2]];
-                board[i + 6][src_y] = board[src_x + i][src_y + order_second[0]];
-                board[i + 6][src_y + 1] = board[src_x + i][src_y + order_second[1]];
-                board[i + 6][src_y + 2] = board[src_x + i][src_y + order_second[2]];
+                board[i][src_y] = board[src_x + i][src_y + first_order[0]];
+                board[i][src_y + 1] = board[src_x + i][src_y + first_order[1]];
+                board[i][src_y + 2] = board[src_x + i][src_y + first_order[2]];
+                board[i + 6][src_y] = board[src_x + i][src_y + second_order[0]];
+                board[i + 6][src_y + 1] = board[src_x + i][src_y + second_order[1]];
+                board[i + 6][src_y + 2] = board[src_x + i][src_y + second_order[2]];
             }
         }
  }
@@ -55,21 +55,21 @@ void SudoGenerator::generate_end_map(const Command& command){
     vector<Board> boards;
     for(int i = 0;i < command.endboard_number;i++){
         vector<vector<char> > board(9, vector<char>(9, '$'));
-        vector<int> row = getRandOrder();
+        vector<int> row = get_randOrder();
         for (int i = 0; i < 3; i++)
         {
             board[3][i + 3] = row[i] + '1';
             board[4][i + 3] = row[i + 3] + '1';
             board[5][i + 3] = row[i + 6] + '1';
         }
-        copySquare(board, 3, 3, true);
-        copySquare(board, 3, 3, false);
-        copySquare(board, 3, 0, false);
-        copySquare(board, 3, 6, false);
+        row_or_col_change(board, 3, 3, true);
+        row_or_col_change(board, 3, 3, false);
+        row_or_col_change(board, 3, 0, false);
+        row_or_col_change(board, 3, 6, false);
         boards.push_back(board);
     }
     f.open("../endmap.txt");
-    writeToFile(boards,"th EndMap-----------");
+    write_to_file(boards,"th EndMap-----------");
 
 
 }
@@ -109,17 +109,17 @@ void SudoGenerator::generate_sudo_game(const Command& command){
             digHoles = get_different_hard_level_dig_holes(command.game_hard_level);
     
         vector<vector<char> > board(9, vector<char>(9, '$'));
-        vector<int> row = getRandOrder();
+        vector<int> row = get_randOrder();
         for (int i = 0; i < 3; i++)
         {
             board[3][i + 3] = row[i] + '1';
             board[4][i + 3] = row[i + 3] + '1';
             board[5][i + 3] = row[i + 6] + '1';
         }
-        copySquare(board, 3, 3, true);
-        copySquare(board, 3, 3, false);
-        copySquare(board, 3, 0, false);
-        copySquare(board, 3, 6, false);
+        row_or_col_change(board, 3, 3, true);
+        row_or_col_change(board, 3, 3, false);
+        row_or_col_change(board, 3, 0, false);
+        row_or_col_change(board, 3, 6, false);
         
         int digCount = digHoles;
         while (digHoles)
@@ -133,8 +133,7 @@ void SudoGenerator::generate_sudo_game(const Command& command){
             digHoles--;
         }
     if(command.is_unique){
-        cout<<"解唯一"<<endl;
-        solver.solve_sudo_game(board);
+        solver.solve_sudo_game(board); 
         if(solver.isAnswerUnique()){
              i++;
              boards.push_back(board);
@@ -147,5 +146,5 @@ void SudoGenerator::generate_sudo_game(const Command& command){
     }
   
     f.open("../sudogame.txt");
-    writeToFile(boards,"th SudoGame-----------");
+    write_to_file(boards,"th SudoGame-----------");
 }

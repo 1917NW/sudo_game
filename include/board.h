@@ -9,9 +9,10 @@
 #include<iostream>
 using namespace std;
 typedef vector<vector<char>> Board;
-vector<int> getRandOrder();
-void writeToFile(vector<Board> boards, string sign_statement);
+vector<int> get_randOrder();
+void write_to_file(vector<Board> boards, string sign_statement);
 vector<Board> read_from_file(string file_path);
+void print_board(Board& board);
 
 #endif
 

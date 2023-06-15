@@ -58,6 +58,13 @@
     "iostream": "cpp",
     "ostream": "cpp",
     "functional": "cpp",
-    "iosfwd": "cpp"
+    "iosfwd": "cpp",
+    "fstream": "cpp",
+    "*.tcc": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "system_error": "cpp"
   }
 }

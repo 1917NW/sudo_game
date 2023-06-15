@@ -4,26 +4,24 @@
 
 extern ofstream f;
 
+
+
 void SudoSolver::solve_sudo_games(const Command& command){
     vector<Board> boards = read_from_file(command.board_path);
-    cout<<command.board_path<<endl;
-    cout<<boards.size()<<endl;
+    
     int count = 1;
     for(Board board : boards){
-        cout<<count<<endl;
         solve_sudo_game(board);
-        cout<<"res:"<<result.size()<<endl;
-
-        f.open("../answer.txt");
+        f.open("../answer.txt",ios::out|ios::app);
         f<<"-----------"<<count++<<"th Answers-----------"<<endl;
-        cout<<count<<endl;
-        writeToFile(result,"th Answer-----------");
+        write_to_file(results,"th Answer-----------");
     }
 
 }
 
+
+
 void SudoSolver::solve_sudo_game(Board board){
-    
      clearState();
      for (int i = 0; i < 9; i++)
      {
@@ -36,48 +34,47 @@ void SudoSolver::solve_sudo_game(Board board){
             else
             {
                 int digit = board[i][j] - '1';
-                flip(i, j, digit);
+                set_mark(i, j, digit);
             }
         }
      }
-     cout<<"solve_sudo_game"<<endl;
      dfs_search(board, 0);
     
 }
 
-void SudoSolver::flip(int i, int j, int digit)
+void SudoSolver::set_mark(int i, int j, int digit)
 {
-    rowUsed[i] ^= (1 << digit);
-    columnUsed[j] ^= (1 << digit);
-    blockUsed[(i / 3) * 3 + j / 3] ^= (1 << digit);
+    row_use_status[i] ^= (1 << digit);
+    column_use_status[j] ^= (1 << digit);
+    block_use_status[(i / 3) * 3 + j / 3] ^= (1 << digit);
 }
 
 void SudoSolver::clearState(){
-     memset(rowUsed, 0, sizeof(rowUsed));
-     memset(columnUsed, 0, sizeof(columnUsed));
-     memset(blockUsed, 0, sizeof(blockUsed));
+     memset(row_use_status, 0, sizeof(row_use_status));
+     memset(column_use_status, 0, sizeof(column_use_status));
+     memset(block_use_status, 0, sizeof(block_use_status));
      spaces.clear();
-     result.clear();
+     results.clear();
 }
 
 void SudoSolver::dfs_search(Board &board, int pos){
      if (pos == spaces.size())
         {
-            result.push_back(board);
+            results.push_back(board);
             return;
         }
         int i = spaces[pos].first;
         int j = spaces[pos].second;
-        int mask = ~(rowUsed[i] | columnUsed[j] | blockUsed[(i / 3) * 3 + j / 3]) & 0x1ff;
+        int mask = ~(row_use_status[i] | column_use_status[j] | block_use_status[(i / 3) * 3 + j / 3]) & 0x1ff;
         int digit = 0;
         while (mask)
         {
             if (mask & 1)
             {
-                flip(i, j, digit);
+                set_mark(i, j, digit);
                 board[i][j] = '1' + digit;
                 dfs_search(board, pos + 1);
-                flip(i, j, digit);
+                set_mark(i, j, digit);
             }
             mask = mask >> 1;
             digit++;
@@ -85,5 +82,5 @@ void SudoSolver::dfs_search(Board &board, int pos){
 }
 
  bool SudoSolver::isAnswerUnique(){
-    return result.size() ==1;
+    return results.size() ==1;
  }

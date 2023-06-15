@@ -25,7 +25,6 @@ void handleCommand(Command& command){
         sudoGenerator.generate_end_map(command);
     }
     else if(command.is_solve){
-        cout<<123<<endl;
         SudoSolver sudoSolver = SudoSolver();
         sudoSolver.solve_sudo_games(command);
     }
@@ -39,6 +38,8 @@ void handleCommand(Command& command){
 
 Command parseCommand(int argc, char* argv[]){
     Command command = Command();
+    if(argc <= 1)
+        exit(0);
     if(strcmp(argv[1], "-c") == 0){
         command.is_create = true;
         try{

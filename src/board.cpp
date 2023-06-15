@@ -3,7 +3,18 @@
 
 ofstream f;
 
-vector<int> getRandOrder()
+void print_board(Board& board){
+
+    for(int i = 0 ; i < board.size();i++){
+        for(int j=0; j<board[i].size();j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    cout<<"-----------------"<<endl;
+}
+
+vector<int> get_randOrder()
 {   
     vector<int> order;
     bool sign[9];
@@ -23,20 +34,16 @@ vector<int> getRandOrder()
             sign[num] = true;
         }
     }
-    for(int i : order){
-        cout<<i;
-    }
-    cout<<endl;
+
     return order;
 }
 
-void writeToFile(vector<Board> boards, string sign_statement){
+void write_to_file(vector<Board> boards, string sign_statement){
    
     for(int k = 0; k < boards.size(); k++){
-        f<<"-----------the "<<k+1<<"th EndMap-----------"<<endl;
+        f<<"-----------the "<<k+1<<sign_statement<<endl;
         for(int i = 0; i < boards[k].size(); i++){
             for(int j = 0; j<boards[k][i].size(); j++){
-                //输入到文件中
                 f << boards[k][i][j];
             }
             f << endl;
@@ -51,15 +58,16 @@ vector<Board> read_from_file(string file_path){
     vector<Board> boards;
     infile.open(file_path);
     char data[100];
-    Board tmp;
+    Board board;
     vector<char> row;
     while (!infile.eof())
     {
         infile.getline(data, 100);
         if (data[0] == '-')
-        {
-            boards.push_back(Board(tmp));
-            tmp.clear();
+        {   
+            if(board.size() > 0)
+            boards.push_back(board);
+            board.clear();
             continue;
         }
         for (int i = 0; i < strlen(data); i++)
@@ -69,9 +77,10 @@ vector<Board> read_from_file(string file_path){
                 row.push_back(data[i]);
             }
         }
-        tmp.push_back(vector<char>(row));
+        board.push_back(row);
         row.clear();
     }
+    boards.push_back(Board(board));
     infile.close();
     return boards;
 }
